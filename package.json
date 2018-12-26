@@ -1,0 +1,37 @@
+{
+    "name": "rollup-boilerplate",
+    "version": "0.1.0",
+    "main": "dist/rollup-boilerplate.cjs.js",
+    "module": "dist/rollup-boilerplate.esm.js",
+    "browser": "dist/rollup-boilerplate.umd.js",
+    "description": "boilerplate for creating javasccript libraries with rollup",
+    "scripts": {
+        "build": "rollup -c",
+        "dev-rollup": "rollup -c -w",
+        "test": "jest",
+        "demon": "nodemon --watch dist ./dev/dev.js localhost 8084",
+        "dev": "npm run dev-rollup | npm run demon"
+    },
+    "files": [
+        "dist"
+    ],
+    "author": "Günther Lösel",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "@babel/core": "7.2.2",
+        "@babel/preset-env": "7.2.3",
+        "babel-core": "7.0.0-bridge.0",
+        "babel-jest": "23.6.0",
+        "eslint": "^5.11.0",
+        "eslint-config-airbnb-base": "^13.1.0",
+        "eslint-plugin-import": "^2.14.0",
+        "jest": "23.6.0",
+        "nodemon": "^1.18.9",
+        "rollup": "^0.68.1",
+        "rollup-plugin-babel": "^4.1.0",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-eslint": "^5.0.0",
+        "rollup-plugin-node-resolve": "^4.0.0"
+    }
+}
