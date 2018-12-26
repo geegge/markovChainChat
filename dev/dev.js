@@ -1,2 +1,2 @@
-const makeItUpperCase = require('../dist/rollup-boilerplate.cjs');
-console.log(makeItUpperCase('hello mr. smith'));
+const markovChainChat = require('../dist/markovChainChat.cjs');
+console.log(markovChainChat('hello mr. markov'));

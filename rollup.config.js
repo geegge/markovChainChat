@@ -9,7 +9,7 @@ export default [
     {
         input: 'src/main.js',
         output: {
-            name: 'makeItUpperCase',
+            name: 'markovChainChat',
             file: pkg.browser,
             format: 'umd'
         },

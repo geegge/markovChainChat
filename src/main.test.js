@@ -1,7 +1,7 @@
-import makeItUpperCase from './main.js';
+import markovChainChat from './main.js';
 
-describe('rollup-boilerplate-dev', () => {
+describe('markovChainChat-dev', () => {
     test('makes string uppercase', () => {
-        expect(makeItUpperCase('hello mr. smith')).toBe('HELLO MR. SMITH');
+        expect(markovChainChat('hello mr. markov')).toBe('HELLO MR. MARKOV');
     });
 });

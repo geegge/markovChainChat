@@ -1,17 +1,17 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global = global || self, global.makeItUpperCase = factory());
+    (global = global || self, global.markovChainChat = factory());
 }(this, function () { 'use strict';
 
     function transformMessage(message) {
       return message.toUpperCase();
     }
 
-    function makeItUpperCase(chatLogFile) {
+    function markovChainChat(chatLogFile) {
       return transformMessage(chatLogFile);
     }
 
-    return makeItUpperCase;
+    return markovChainChat;
 
 }));

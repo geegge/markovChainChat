@@ -1,10 +1,10 @@
 {
-    "name": "rollup-boilerplate",
+    "name": "markovChainChat",
     "version": "0.1.0",
-    "main": "dist/rollup-boilerplate.cjs.js",
-    "module": "dist/rollup-boilerplate.esm.js",
-    "browser": "dist/rollup-boilerplate.umd.js",
-    "description": "boilerplate for creating javasccript libraries with rollup",
+    "main": "dist/markovChainChat.cjs.js",
+    "module": "dist/markovChainChat.esm.js",
+    "browser": "dist/markovChainChat.umd.js",
+    "description": "library for chat-message-predictions based on markov-chains",
     "scripts": {
         "build": "rollup -c",
         "dev-rollup": "rollup -c -w",

@@ -1,5 +1,5 @@
 import transformMessage from './transformMessage.js';
 
-export default function makeItUpperCase(chatLogFile) {
+export default function markovChainChat(chatLogFile) {
     return transformMessage(chatLogFile);
 }
