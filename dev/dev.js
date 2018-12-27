@@ -1,2 +1,3 @@
 const markovChainChat = require('../dist/markovChainChat.cjs');
-console.log(markovChainChat('hello mr. markov'));
+const path = require('path');
+markovChainChat(path.resolve(__dirname, './chatlog.txt'));

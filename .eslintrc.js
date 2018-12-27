@@ -7,11 +7,12 @@ module.exports = {
     globals: {
         describe: true,
         expect: true,
-        test: true
+        test: true,
+        __dirname: true
     },
     extends: 'eslint:recommended',
     parserOptions: {
-        ecmaVersion: 2016,
+        ecmaVersion: 2017,
         sourceType: 'module'
     },
     rules: {
