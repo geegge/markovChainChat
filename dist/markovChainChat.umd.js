@@ -1,8 +1,7 @@
-(function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+(function (factory) {
   typeof define === 'function' && define.amd ? define(factory) :
-  (global = global || self, global.markovChainChat = factory());
-}(this, function () { 'use strict';
+  factory();
+}(function () { 'use strict';
 
   function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
@@ -40,6 +39,28 @@
     };
   }
 
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  function _createClass(Constructor, protoProps, staticProps) {
+    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) _defineProperties(Constructor, staticProps);
+    return Constructor;
+  }
+
   var fs = require('fs');
 
   var loadDataFile = function loadDataFile(file) {
@@ -51,43 +72,54 @@
     });
   };
 
-  var readAndProcess =
+  var markovChainChat =
   /*#__PURE__*/
   function () {
-    var _ref = _asyncToGenerator(
-    /*#__PURE__*/
-    regeneratorRuntime.mark(function _callee(filePath) {
-      var data;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return loadDataFile(filePath);
+    function markovChainChat(textFile) {
+      _classCallCheck(this, markovChainChat);
 
-            case 2:
-              data = _context.sent;
-              console.log('data: ', data); //let result  = await processData( content )
+      this.textData = this.readAndProcess(textFile);
+    }
 
-              return _context.abrupt("return", data);
+    _createClass(markovChainChat, [{
+      key: "readAndProcess",
+      value: function () {
+        var _readAndProcess = _asyncToGenerator(
+        /*#__PURE__*/
+        regeneratorRuntime.mark(function _callee(filePath) {
+          var data;
+          return regeneratorRuntime.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  _context.next = 2;
+                  return loadDataFile(filePath);
 
-            case 5:
-            case "end":
-              return _context.stop();
-          }
+                case 2:
+                  data = _context.sent;
+                  console.log('[[markovChainChat]] data: ', data); //let result  = await processData( content )
+
+                  return _context.abrupt("return", data);
+
+                case 5:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, this);
+        }));
+
+        function readAndProcess(_x) {
+          return _readAndProcess.apply(this, arguments);
         }
-      }, _callee, this);
-    }));
 
-    return function readAndProcess(_x) {
-      return _ref.apply(this, arguments);
-    };
+        return readAndProcess;
+      }()
+    }]);
+
+    return markovChainChat;
   }();
 
-  function markovChainChat(chatLogFile) {
-    readAndProcess(chatLogFile);
-  }
-
-  return markovChainChat;
+  module.exports = markovChainChat;
 
 }));

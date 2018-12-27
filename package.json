@@ -1,5 +1,5 @@
 {
-    "name": "markovChainChat",
+    "name": "markov-chain-chat",
     "version": "0.1.0",
     "main": "dist/markovChainChat.cjs.js",
     "module": "dist/markovChainChat.esm.js",
