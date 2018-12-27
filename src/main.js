@@ -5,11 +5,9 @@ class markovChainChat {
         this.textData = this.readAndProcess(textFile);
     }
     async readAndProcess(filePath) {
-        let data = await loadDataFile(filePath);
-        console.log('[[markovChainChat]] data: ', data);
+        let rawData = await loadDataFile(filePath);
+        console.log('[[markovChainChat]] data: ', rawData);
         //let result  = await processData( content )
-
-        return data;
     }
 }
 

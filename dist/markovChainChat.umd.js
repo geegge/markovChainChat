@@ -87,7 +87,7 @@
         var _readAndProcess = _asyncToGenerator(
         /*#__PURE__*/
         regeneratorRuntime.mark(function _callee(filePath) {
-          var data;
+          var rawData;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -96,12 +96,10 @@
                   return loadDataFile(filePath);
 
                 case 2:
-                  data = _context.sent;
-                  console.log('[[markovChainChat]] data: ', data); //let result  = await processData( content )
+                  rawData = _context.sent;
+                  console.log('[[markovChainChat]] data: ', rawData); //let result  = await processData( content )
 
-                  return _context.abrupt("return", data);
-
-                case 5:
+                case 4:
                 case "end":
                   return _context.stop();
               }
