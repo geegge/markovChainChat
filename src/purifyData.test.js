@@ -29,6 +29,21 @@ const messages = {
     ]
 };
 
+const expectedMessagesArray = [
+    {
+        _id: 'a7zaoRxZuv4kBgenH',
+        msg: 'Danke, gut! und selbst?',
+        ts: '2018-12-27T11:36:03.711Z',
+        user: 'markov'
+    },
+    {
+        _id: 'uhFudDJCsdsNgogR8',
+        msg: ':relaxed:',
+        ts: '2018-12-27T11:39:11.695Z',
+        user: 'Asimov'
+    }
+];
+
 describe('purifying message objects', () => {
     it('should return array of message-objects', async () => {
         expect.assertions(2);
@@ -38,11 +53,9 @@ describe('purifying message objects', () => {
     });
 
     it('should remove unused properties from message-objects', async () => {
-        expect.assertions(3);
+        expect.assertions(1);
         const cleanData = await purifyData(messages);
-        expect(cleanData[0].rid).toBeFalsy();
-        expect(cleanData[0].user).toBe('markov');
-        expect(cleanData[0].msg).toBe('Danke, gut! und selbst?');
+        expect(cleanData).toMatchObject(expectedMessagesArray);
     });
 
     it('should throw error on wrong input', async () => {
