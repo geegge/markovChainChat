@@ -1,13 +1,21 @@
 import loadDataFile from './loadDataFile.js';
+import prepareData from './prepareData.js';
+import purifyData from './purifyData.js';
 
 class markovChainChat {
     constructor(textFile) {
-        this.textData = this.readAndProcess(textFile);
+        this.readProcessStore(textFile);
     }
-    async readAndProcess(filePath) {
-        let rawData = await loadDataFile(filePath);
-        console.log('[[markovChainChat]] data: ', rawData);
-        //let result  = await processData( content )
+    async readProcessStore(filePath) {
+        //@todo: make it work fp
+        const rawData = await loadDataFile(filePath);
+        const refinedData = await prepareData(rawData);
+        const messagesArr = await purifyData(refinedData);
+        //@todo: function for storing data
+        console.log(
+            '[[markovChainChat]] messagesArr: ',
+            messagesArr[messagesArr.length - 1]
+        );
     }
 }
 
