@@ -17,7 +17,9 @@
     ],
     "author": "Günther Lösel",
     "license": "MIT",
-    "dependencies": {},
+    "dependencies": {
+        "ramda": "^0.26.1"
+    },
     "devDependencies": {
         "@babel/core": "7.2.2",
         "@babel/preset-env": "7.2.3",
