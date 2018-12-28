@@ -10,7 +10,8 @@
         "dev-rollup": "rollup -c -w",
         "test": "jest",
         "demon": "nodemon --watch dist ./dev/dev.js localhost 8084",
-        "dev": "npm run dev-rollup | npm run demon"
+        "dev": "npm run dev-rollup | npm run demon",
+        "coverage": "jest --coverage"
     },
     "files": [
         "dist"
