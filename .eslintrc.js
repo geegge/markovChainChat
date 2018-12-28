@@ -8,6 +8,7 @@ module.exports = {
         describe: true,
         expect: true,
         test: true,
+        it: true,
         __dirname: true
     },
     extends: 'eslint:recommended',
