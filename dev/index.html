@@ -15,7 +15,8 @@
         </p>
         <script>
             const output = document.querySelector('#consoleOutput');
-            output.innerHTML = markovChainChat('./chatlog.txt');
+            //output.innerHTML = 'some logs';
+            const myMarkovChain = new markovChainChat('./chatlog.txt');
         </script>
     </body>
 </html>
