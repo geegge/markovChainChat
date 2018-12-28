@@ -23,6 +23,7 @@ const prepareData = data => {
 };
 
 const modifyMessageObj = messageObj => {
+    delete messageObj.rid;
     delete messageObj.mentions;
     delete messageObj.channels;
     messageObj.user = messageObj.u.username;
