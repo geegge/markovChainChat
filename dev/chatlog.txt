@@ -97,36 +97,6 @@
             "_updatedAt": "2018-12-27T11:33:43.967Z",
             "mentions": [],
             "channels": []
-        },
-        {
-            "_id": "s5PrWusmLEqFjjqRi",
-            "t": "uj",
-            "rid": "GENERAL",
-            "ts": "2018-12-27T11:32:10.312Z",
-            "msg": "Asimov",
-            "u": { "_id": "MoAd6XK84uc2LGfTc", "username": "Asimov" },
-            "groupable": false,
-            "_updatedAt": "2018-12-27T11:32:10.312Z"
-        },
-        {
-            "_id": "LAJhJFGw7tdcoNWwq",
-            "t": "uj",
-            "rid": "GENERAL",
-            "ts": "2018-12-27T11:30:47.445Z",
-            "msg": "markov",
-            "u": { "_id": "FWtqgRR2r5eo9v4g6", "username": "markov" },
-            "groupable": false,
-            "_updatedAt": "2018-12-27T11:30:47.445Z"
-        },
-        {
-            "_id": "qK8iLdpf6jiLkL3Xa",
-            "t": "uj",
-            "rid": "GENERAL",
-            "ts": "2018-12-27T11:26:06.791Z",
-            "msg": "admin",
-            "u": { "_id": "FNiv7wo4LCctxMNCo", "username": "admin" },
-            "groupable": false,
-            "_updatedAt": "2018-12-27T11:26:06.791Z"
         }
     ],
     "success": true
