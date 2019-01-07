@@ -45,21 +45,18 @@ const expectedMessagesArray = [
 ];
 
 describe('purifying message objects', () => {
-    it('should return array of message-objects', async () => {
-        expect.assertions(2);
-        const cleanData = await purifyData(messages);
+    it('should return array of message-objects', () => {
+        const cleanData = purifyData(messages);
         expect(Array.isArray(cleanData)).toBe(true);
         expect(cleanData.length).toBe(2);
     });
 
-    it('should remove unused properties from message-objects', async () => {
-        expect.assertions(1);
-        const cleanData = await purifyData(messages);
+    it('should remove unused properties from message-objects', () => {
+        const cleanData = purifyData(messages);
         expect(cleanData).toMatchObject(expectedMessagesArray);
     });
 
-    it('should throw error on wrong input', async () => {
-        expect.assertions(1);
-        await expect(purifyData(1)).rejects.toThrow();
+    it('should throw error on wrong input', () => {
+        expect(purifyData(1)).toBe('');
     });
 });
