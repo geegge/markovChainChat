@@ -6,7 +6,9 @@ library to provide chat-message-predictions based on [markov-chains](https://en.
 
 :bangbang: **under development**
 
-## dev notes
+## developing
+
+for developing run `npm run dev` to start dev-server and setup dev implementation in `dev/dev.js` or `dev/index.html`
 
 get messages out of rocket chat(via [RestApi](https://rocket.chat/docs/developer-guides/rest-api/)):
 
