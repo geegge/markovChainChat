@@ -61,17 +61,6 @@
     return Constructor;
   }
 
-  var fs = require('fs');
-
-  var loadDataFile = function loadDataFile(file) {
-    return new Promise(function (resolve, reject) {
-      fs.readFile(file, 'utf8', function (err, data) {
-        if (err) reject(err);
-        resolve(data);
-      });
-    });
-  };
-
   /**
    * A special placeholder value used to specify "gaps" within curried functions,
    * allowing partial application of any combination of arguments, regardless of
@@ -3182,15 +3171,25 @@
    */
   var unnest = /*#__PURE__*/chain(_identity);
 
+  var fs = require('fs');
+
+  var loadDataFile = function loadDataFile(file) {
+    return new Promise(function (resolve, reject) {
+      fs.readFile(file, 'utf8', function (err, data) {
+        if (err) reject(err);
+        resolve(data);
+      });
+    });
+  };
+
   var prepareData = function prepareData(data) {
     var myData = clone(data);
-    return new Promise(function (resolve, reject$$1) {
-      try {
-        resolve(JSON.parse(myData));
-      } catch (error) {
-        reject$$1(error);
-      }
-    });
+
+    try {
+      return JSON.parse(myData);
+    } catch (error) {
+      return '';
+    }
   };
 
   var modifyMessageObj = function modifyMessageObj(messageObj) {
@@ -3206,16 +3205,15 @@
   var purifyData = function purifyData(data) {
     var myData = clone(data);
     var messagesArray = myData.messages;
-    return new Promise(function (resolve, reject$$1) {
-      try {
-        var cleanMessagesArray = messagesArray.map(function (item) {
-          return modifyMessageObj(item);
-        });
-        resolve(cleanMessagesArray);
-      } catch (error) {
-        reject$$1(error);
-      }
-    });
+
+    try {
+      var cleanMessagesArray = messagesArray.map(function (item) {
+        return modifyMessageObj(item);
+      });
+      return cleanMessagesArray;
+    } catch (error) {
+      return '';
+    }
   };
 
   var markovChainChat =
@@ -3233,7 +3231,7 @@
         var _readProcessStore = _asyncToGenerator(
         /*#__PURE__*/
         regeneratorRuntime.mark(function _callee(filePath) {
-          var rawData, refinedData, messagesArr;
+          var rawData, getRefinedData, myfineData;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -3243,20 +3241,12 @@
 
                 case 2:
                   rawData = _context.sent;
-                  _context.next = 5;
-                  return prepareData(rawData);
+                  getRefinedData = compose(purifyData, prepareData);
+                  myfineData = getRefinedData(rawData); //@todo: function for storing data
 
-                case 5:
-                  refinedData = _context.sent;
-                  _context.next = 8;
-                  return purifyData(refinedData);
+                  console.log('[[markovChainChat]] myfineData: ', myfineData[myfineData.length - 1]);
 
-                case 8:
-                  messagesArr = _context.sent;
-                  //@todo: function for storing data
-                  console.log('[[markovChainChat]] messagesArr: ', messagesArr[messagesArr.length - 1]);
-
-                case 10:
+                case 6:
                 case "end":
                   return _context.stop();
               }

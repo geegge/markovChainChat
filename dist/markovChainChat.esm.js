@@ -1,4 +1,4 @@
-import { clone } from 'ramda';
+import { clone, compose } from 'ramda';
 
 const fs = require('fs');
 
@@ -13,13 +13,11 @@ const loadDataFile = file => {
 
 const prepareData = data => {
     const myData = clone(data);
-    return new Promise((resolve, reject) => {
-        try {
-            resolve(JSON.parse(myData));
-        } catch (error) {
-            reject(error);
-        }
-    });
+    try {
+        return JSON.parse(myData);
+    } catch (error) {
+        return '';
+    }
 };
 
 const modifyMessageObj = messageObj => {
@@ -35,16 +33,14 @@ const modifyMessageObj = messageObj => {
 const purifyData = data => {
     const myData = clone(data);
     const messagesArray = myData.messages;
-    return new Promise((resolve, reject) => {
-        try {
-            const cleanMessagesArray = messagesArray.map(item => {
-                return modifyMessageObj(item);
-            });
-            resolve(cleanMessagesArray);
-        } catch (error) {
-            reject(error);
-        }
-    });
+    try {
+        const cleanMessagesArray = messagesArray.map(item => {
+            return modifyMessageObj(item);
+        });
+        return cleanMessagesArray;
+    } catch (error) {
+        return '';
+    }
 };
 
 class markovChainChat {
@@ -52,14 +48,18 @@ class markovChainChat {
         this.readProcessStore(textFile);
     }
     async readProcessStore(filePath) {
-        //@todo: make it work fp
         const rawData = await loadDataFile(filePath);
-        const refinedData = await prepareData(rawData);
-        const messagesArr = await purifyData(refinedData);
+
+        const getRefinedData = compose(
+            purifyData,
+            prepareData
+        );
+        const myfineData = getRefinedData(rawData);
+
         //@todo: function for storing data
         console.log(
-            '[[markovChainChat]] messagesArr: ',
-            messagesArr[messagesArr.length - 1]
+            '[[markovChainChat]] myfineData: ',
+            myfineData[myfineData.length - 1]
         );
     }
 }
