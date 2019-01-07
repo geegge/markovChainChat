@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import loadDataFile from './loadDataFile.js';
 import prepareData from './prepareData.js';
 import purifyData from './purifyData.js';
@@ -7,14 +8,18 @@ class markovChainChat {
         this.readProcessStore(textFile);
     }
     async readProcessStore(filePath) {
-        //@todo: make it work fp
         const rawData = await loadDataFile(filePath);
-        const refinedData = await prepareData(rawData);
-        const messagesArr = await purifyData(refinedData);
+
+        const getRefinedData = R.compose(
+            purifyData,
+            prepareData
+        );
+        const myfineData = getRefinedData(rawData);
+
         //@todo: function for storing data
         console.log(
-            '[[markovChainChat]] messagesArr: ',
-            messagesArr[messagesArr.length - 1]
+            '[[markovChainChat]] myfineData: ',
+            myfineData[myfineData.length - 1]
         );
     }
 }
