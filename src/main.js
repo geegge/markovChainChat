@@ -3,6 +3,8 @@ import loadDataFile from './utility/loadDataFile.js';
 import prepareData from './utility/prepareData.js';
 import purifyData from './utility/purifyData.js';
 
+import getUniqueMessageContent from './utility/getUniqueMessageContent.js';
+
 class markovChainChat {
     constructor(textFile) {
         this.readProcessStore(textFile);
@@ -10,16 +12,18 @@ class markovChainChat {
     async readProcessStore(filePath) {
         const rawData = await loadDataFile(filePath);
 
-        const getRefinedData = R.compose(
+        const getcleansedData = R.compose(
             purifyData,
             prepareData
         );
-        const myfineData = getRefinedData(rawData);
+        const myfineData = getcleansedData(rawData);
+
+        const MyUniqueContentList = getUniqueMessageContent(myfineData);
 
         //@todo: function for storing data
         console.log(
-            '[[markovChainChat]] myfineData: ',
-            myfineData[myfineData.length - 1]
+            '[[markovChainChat]] MyUniqueContentList: ',
+            MyUniqueContentList
         );
     }
 }
