@@ -56,7 +56,7 @@ describe('purifying message objects', () => {
         expect(cleanData).toMatchObject(expectedMessagesArray);
     });
 
-    it('should throw error on wrong input', () => {
+    it('should return empty string', () => {
         expect(purifyData(1)).toBe('');
     });
 });

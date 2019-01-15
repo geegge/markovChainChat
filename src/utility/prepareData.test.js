@@ -12,7 +12,7 @@ describe('testing data parsing', () => {
         expect(preparedData.messages[0].u.username).toBe('Asimov');
     });
 
-    it('should throw error when json is malformed', () => {
+    it('should return empty string when json is malformed', () => {
         expect(prepareData(stringToBeParsedMalformed)).toBe('');
     });
 });
