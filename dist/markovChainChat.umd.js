@@ -3216,6 +3216,30 @@
     }
   };
 
+  var getUniqueMessageContent = function getUniqueMessageContent(data) {
+    var myData = clone(data); //todo: improve!!!
+    //todo: write tests
+
+    var uniqueMessages = [];
+    var uniqueMessageItems = [];
+    myData.forEach(function (item) {
+      if (!uniqueMessages.includes(item.msg)) {
+        uniqueMessages.push(item.msg);
+        uniqueMessageItems.push({
+          msg: item.msg,
+          rel: [item._id]
+        });
+      } else {
+        uniqueMessageItems.forEach(function (element) {
+          if (element.msg === item.msg) {
+            element.rel.push(item._id);
+          }
+        });
+      }
+    });
+    return uniqueMessageItems;
+  };
+
   var markovChainChat =
   /*#__PURE__*/
   function () {
@@ -3231,7 +3255,7 @@
         var _readProcessStore = _asyncToGenerator(
         /*#__PURE__*/
         regeneratorRuntime.mark(function _callee(filePath) {
-          var rawData, getRefinedData, myfineData;
+          var rawData, getcleansedData, myfineData, MyUniqueContentList;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -3241,12 +3265,13 @@
 
                 case 2:
                   rawData = _context.sent;
-                  getRefinedData = compose(purifyData, prepareData);
-                  myfineData = getRefinedData(rawData); //@todo: function for storing data
+                  getcleansedData = compose(purifyData, prepareData);
+                  myfineData = getcleansedData(rawData);
+                  MyUniqueContentList = getUniqueMessageContent(myfineData); //@todo: function for storing data
 
-                  console.log('[[markovChainChat]] myfineData: ', myfineData[myfineData.length - 1]);
+                  console.log('[[markovChainChat]] MyUniqueContentList: ', MyUniqueContentList);
 
-                case 6:
+                case 7:
                 case "end":
                   return _context.stop();
               }

@@ -43,6 +43,30 @@ const purifyData = data => {
     }
 };
 
+const getUniqueMessageContent = data => {
+    const myData = clone(data);
+
+    //todo: improve!!!
+    //todo: write tests
+    const uniqueMessages = [];
+    const uniqueMessageItems = [];
+
+    myData.forEach(function(item) {
+        if (!uniqueMessages.includes(item.msg)) {
+            uniqueMessages.push(item.msg);
+            uniqueMessageItems.push({ msg: item.msg, rel: [item._id] });
+        } else {
+            uniqueMessageItems.forEach(function(element) {
+                if (element.msg === item.msg) {
+                    element.rel.push(item._id);
+                }
+            });
+        }
+    });
+
+    return uniqueMessageItems;
+};
+
 class markovChainChat {
     constructor(textFile) {
         this.readProcessStore(textFile);
@@ -50,16 +74,18 @@ class markovChainChat {
     async readProcessStore(filePath) {
         const rawData = await loadDataFile(filePath);
 
-        const getRefinedData = compose(
+        const getcleansedData = compose(
             purifyData,
             prepareData
         );
-        const myfineData = getRefinedData(rawData);
+        const myfineData = getcleansedData(rawData);
+
+        const MyUniqueContentList = getUniqueMessageContent(myfineData);
 
         //@todo: function for storing data
         console.log(
-            '[[markovChainChat]] myfineData: ',
-            myfineData[myfineData.length - 1]
+            '[[markovChainChat]] MyUniqueContentList: ',
+            MyUniqueContentList
         );
     }
 }
