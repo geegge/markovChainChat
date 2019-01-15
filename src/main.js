@@ -1,7 +1,7 @@
 import * as R from 'ramda';
-import loadDataFile from './loadDataFile.js';
-import prepareData from './prepareData.js';
-import purifyData from './purifyData.js';
+import loadDataFile from './utility/loadDataFile.js';
+import prepareData from './utility/prepareData.js';
+import purifyData from './utility/purifyData.js';
 
 class markovChainChat {
     constructor(textFile) {
