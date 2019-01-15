@@ -71,6 +71,20 @@
             "channels": []
         },
         {
+            "_id": "Kojw6bLaQ6nGTqXxx",
+            "rid": "GENERAL",
+            "msg": "Hi",
+            "ts": "2018-12-27T11:33:46.708Z",
+            "u": {
+                "_id": "YoAd6XK84uc2LGfXx",
+                "username": "Alexei",
+                "name": "Mr. Alexei"
+            },
+            "_updatedAt": "2018-12-27T11:33:43.967Z",
+            "mentions": [],
+            "channels": []
+        },
+        {
             "_id": "WeBM4BnofjD8eR6vb",
             "rid": "GENERAL",
             "msg": "Hallo",
