@@ -19,6 +19,7 @@
     "author": "Günther Lösel",
     "license": "MIT",
     "dependencies": {
+        "mathjs": "^5.4.1",
         "ramda": "^0.26.1"
     },
     "devDependencies": {
