@@ -1,4 +1,5 @@
 import { clone, compose } from 'ramda';
+import { matrix, subset, index, range } from 'mathjs';
 
 const fs = require('fs');
 
@@ -80,13 +81,26 @@ class markovChainChat {
         );
         const myfineData = getcleansedData(rawData);
 
-        const MyUniqueContentList = getUniqueMessageContent(myfineData);
+        const myUniqueContentList = getUniqueMessageContent(myfineData);
+
+        //draft!!!
+        //adding probabilites from readme for testing (left direction in matrice is down in table)
+        const m1 = matrix([
+            [0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0.5, 0],
+            [0, 0, 0, 0, 0, 0, 1],
+            [0, 0, 0, 0, 0, 0.5, 0]
+        ]);
+        myUniqueContentList.forEach((ele, index$$1) => {
+            if (ele.msg === 'Hallo') ;
+        });
+
+        console.log(subset(m1, index(range(0, 4))));
 
         //@todo: function for storing data
-        console.log(
-            '[[markovChainChat]] MyUniqueContentList: ',
-            MyUniqueContentList
-        );
     }
 }
 
