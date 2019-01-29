@@ -1,7 +1,6 @@
 'use strict';
 
 var R = require('ramda');
-var math = require('mathjs');
 
 const fs = require('fs');
 
@@ -83,24 +82,38 @@ class markovChainChat {
         );
         const myfineData = getcleansedData(rawData);
 
+        console.log(myfineData);
+
         const myUniqueContentList = getUniqueMessageContent(myfineData);
 
         //draft!!!
-        //adding probabilites from readme for testing (left direction in matrice is down in table)
-        const m1 = math.matrix([
-            [0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 0, 0.5, 0],
-            [0, 0, 0, 0, 0, 0, 1],
-            [0, 0, 0, 0, 0, 0.5, 0]
-        ]);
+        const arrMatrix = [
+            [null, 0, 0, 0, 0, 0, 0],
+            [1, null, 0, 0, 0, 0, 0],
+            [0, 1, null, 0, 0, 0, 0],
+            [0, 0, 1, null, 0, 0, 0],
+            [0, 0, 0, 1, null, 0, 0],
+            [0, 0, 0, 0, 0.5, null, 0.5],
+            [0, 0, 0, 0, 0, 1, null]
+        ];
+
+        let msgIndex = null;
         myUniqueContentList.forEach((ele, index) => {
-            if (ele.msg === 'Hallo') ;
+            if (ele.msg === 'Hi') {
+                msgIndex = index;
+            }
         });
 
-        console.log(math.subset(m1, math.index(math.range(0, 4))));
+        arrMatrix[msgIndex].forEach((value, index) => {
+            if (value !== null && value !== 0) {
+                console.log(
+                    '"' +
+                        myUniqueContentList[index].msg +
+                        '" - Probability: ' +
+                        value
+                );
+            }
+        });
 
         //@todo: function for storing data
     }

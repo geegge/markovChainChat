@@ -1,5 +1,4 @@
 import { clone, compose } from 'ramda';
-import { matrix, subset, index, range } from 'mathjs';
 
 const fs = require('fs');
 
@@ -81,24 +80,38 @@ class markovChainChat {
         );
         const myfineData = getcleansedData(rawData);
 
+        console.log(myfineData);
+
         const myUniqueContentList = getUniqueMessageContent(myfineData);
 
         //draft!!!
-        //adding probabilites from readme for testing (left direction in matrice is down in table)
-        const m1 = matrix([
-            [0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0, 0, 0],
-            [0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 0, 0.5, 0],
-            [0, 0, 0, 0, 0, 0, 1],
-            [0, 0, 0, 0, 0, 0.5, 0]
-        ]);
-        myUniqueContentList.forEach((ele, index$$1) => {
-            if (ele.msg === 'Hallo') ;
+        const arrMatrix = [
+            [null, 0, 0, 0, 0, 0, 0],
+            [1, null, 0, 0, 0, 0, 0],
+            [0, 1, null, 0, 0, 0, 0],
+            [0, 0, 1, null, 0, 0, 0],
+            [0, 0, 0, 1, null, 0, 0],
+            [0, 0, 0, 0, 0.5, null, 0.5],
+            [0, 0, 0, 0, 0, 1, null]
+        ];
+
+        let msgIndex = null;
+        myUniqueContentList.forEach((ele, index) => {
+            if (ele.msg === 'Hi') {
+                msgIndex = index;
+            }
         });
 
-        console.log(subset(m1, index(range(0, 4))));
+        arrMatrix[msgIndex].forEach((value, index) => {
+            if (value !== null && value !== 0) {
+                console.log(
+                    '"' +
+                        myUniqueContentList[index].msg +
+                        '" - Probability: ' +
+                        value
+                );
+            }
+        });
 
         //@todo: function for storing data
     }
