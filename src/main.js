@@ -2,6 +2,7 @@ import * as R from 'ramda';
 import loadDataFile from './utility/loadDataFile.js';
 import prepareData from './utility/prepareData.js';
 import purifyData from './utility/purifyData.js';
+import streamlineToList from './utility/streamlineToList.js';
 
 import getUniqueMessageContent from './utility/getUniqueMessageContent.js';
 
@@ -12,19 +13,20 @@ class markovChainChat {
     async readProcessStore(filePath) {
         const rawData = await loadDataFile(filePath);
 
-        //@todo: rethink how much (detail)data needed, or if msg is enough
-        const getcleansedData = R.compose(
+        //move to utilites..
+        const turnOrder = R.invoker(0, 'reverse');
+
+        const getRefinedData = R.compose(
+            turnOrder,
+            streamlineToList,
             purifyData,
             prepareData
         );
 
-        const myfineData = getcleansedData(rawData).reverse();
+        const msgList = getRefinedData(rawData);
+        console.log(msgList);
 
-        console.log('chat:');
-        myfineData.forEach(item => {
-            console.log(item.msg);
-        });
-
+        /*
         //DRAFT!!! (roughly working)
         const myUniqueContentList = getUniqueMessageContent(myfineData);
         const myUniqueContentListMessageArray = myUniqueContentList.map(
@@ -65,12 +67,12 @@ class markovChainChat {
                         this.getRandomInt(possibleFollowUps.length)
                     ]
                 ]
-        );
-
+        ); 
+*/
         //@todo: function for storing data
     }
 
-    //@todo: put into helper/utility module
+    //@todo: put into helper/utility module if still needed
     getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
