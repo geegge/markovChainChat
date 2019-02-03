@@ -31,16 +31,10 @@ const messages = {
 
 const expectedMessagesArray = [
     {
-        _id: 'a7zaoRxZuv4kBgenH',
-        msg: 'Danke, gut! und selbst?',
-        ts: '2018-12-27T11:36:03.711Z',
-        user: 'markov'
+        msg: 'Danke, gut! und selbst?'
     },
     {
-        _id: 'uhFudDJCsdsNgogR8',
-        msg: ':relaxed:',
-        ts: '2018-12-27T11:39:11.695Z',
-        user: 'Asimov'
+        msg: ':relaxed:'
     }
 ];
 
