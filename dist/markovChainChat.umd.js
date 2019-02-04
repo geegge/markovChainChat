@@ -3193,12 +3193,15 @@
   };
 
   var modifyMessageObj = function modifyMessageObj(messageObj) {
+    delete messageObj._id;
     delete messageObj.rid;
     delete messageObj.mentions;
     delete messageObj.channels;
     messageObj.user = messageObj.u.username;
     delete messageObj.u;
     delete messageObj._updatedAt;
+    delete messageObj.ts;
+    delete messageObj.user;
     return messageObj;
   };
 
@@ -3216,28 +3219,16 @@
     }
   };
 
-  var getUniqueMessageContent = function getUniqueMessageContent(data) {
-    var myData = clone(data); //todo: improve!!!
-    //todo: write tests
+  var streamlineToList = function streamlineToList(data) {
+    var myData = clone(data);
 
-    var uniqueMessages = [];
-    var uniqueMessageItems = [];
-    myData.forEach(function (item) {
-      if (!uniqueMessages.includes(item.msg)) {
-        uniqueMessages.push(item.msg);
-        uniqueMessageItems.push({
-          msg: item.msg,
-          rel: [item._id]
-        });
-      } else {
-        uniqueMessageItems.forEach(function (element) {
-          if (element.msg === item.msg) {
-            element.rel.push(item._id);
-          }
-        });
-      }
-    });
-    return uniqueMessageItems;
+    try {
+      return myData.map(function (item) {
+        return item.msg;
+      });
+    } catch (error) {
+      return '';
+    }
   };
 
   var markovChainChat =
@@ -3255,7 +3246,7 @@
         var _readProcessStore = _asyncToGenerator(
         /*#__PURE__*/
         regeneratorRuntime.mark(function _callee(filePath) {
-          var rawData, getcleansedData, myfineData, myUniqueContentList, myUniqueContentListMessageArray, matrice, testMsg, indexOfMsg, possibleFollowUps;
+          var rawData, turnOrder, getRefinedData, msgList, myUniqueContentList, matrice, testMsg, indexOfMsg, possibleFollowUps;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -3265,42 +3256,32 @@
 
                 case 2:
                   rawData = _context.sent;
-                  //@todo: rethink how much (detail)data needed, or if msg is enough
-                  getcleansedData = compose(purifyData, prepareData);
-                  myfineData = getcleansedData(rawData).reverse();
-                  console.log('chat:');
-                  myfineData.forEach(function (item) {
-                    console.log(item.msg);
-                  }); //DRAFT!!! (roughly working)
-
-                  myUniqueContentList = getUniqueMessageContent(myfineData);
-                  myUniqueContentListMessageArray = myUniqueContentList.map(function (item) {
-                    return item.msg;
-                  }); // console.log(myUniqueContentListMessageArray);
+                  //move to utilites..
+                  turnOrder = invoker(0, 'reverse');
+                  getRefinedData = compose(turnOrder, streamlineToList, purifyData, prepareData);
+                  msgList = getRefinedData(rawData);
+                  myUniqueContentList = uniq(msgList); //DRAFT!!! (roughly working)
 
                   matrice = [];
                   myUniqueContentList.forEach(function (item, index) {
                     matrice.push([]);
-                    myfineData.forEach(function (ele, i) {
-                      if (item.msg === ele.msg) {
-                        if (i + 1 < myfineData.length) {
-                          matrice[index].push(myUniqueContentListMessageArray.indexOf(myfineData[i + 1].msg));
+                    msgList.forEach(function (ele, i) {
+                      if (item === ele) {
+                        if (i + 1 < msgList.length) {
+                          matrice[index].push(myUniqueContentList.indexOf(msgList[i + 1]));
                         }
                       }
                     });
-                  }); //DRAFT!!! just testing output
+                  }); // console.log(matrice);
+                  //just testing output
 
                   testMsg = 'Hi';
                   console.log('------ \nmsg: ' + testMsg);
-                  indexOfMsg = myUniqueContentListMessageArray.indexOf(testMsg);
-                  possibleFollowUps = matrice[indexOfMsg]; // console.log('possible next messages:');
-                  // possibleFollowUps.forEach((val, index) => {
-                  //     console.log(myUniqueContentListMessageArray[val]);
-                  // });
+                  indexOfMsg = myUniqueContentList.indexOf(testMsg);
+                  possibleFollowUps = matrice[indexOfMsg];
+                  console.log('answer: ' + myUniqueContentList[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]]); //@todo: function for storing data
 
-                  console.log('answer: ' + myUniqueContentListMessageArray[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]]); //@todo: function for storing data
-
-                case 16:
+                case 14:
                 case "end":
                   return _context.stop();
               }
@@ -3313,7 +3294,7 @@
         }
 
         return readProcessStore;
-      }() //@todo: put into helper/utility module
+      }() //@todo: put into helper/utility module if still needed
 
     }, {
       key: "getRandomInt",

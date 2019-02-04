@@ -1,4 +1,4 @@
-import { clone, compose } from 'ramda';
+import { clone, invoker, compose, uniq } from 'ramda';
 
 const fs = require('fs');
 
@@ -21,12 +21,15 @@ const prepareData = data => {
 };
 
 const modifyMessageObj = messageObj => {
+    delete messageObj._id;
     delete messageObj.rid;
     delete messageObj.mentions;
     delete messageObj.channels;
     messageObj.user = messageObj.u.username;
     delete messageObj.u;
     delete messageObj._updatedAt;
+    delete messageObj.ts;
+    delete messageObj.user;
     return messageObj;
 };
 
@@ -43,28 +46,13 @@ const purifyData = data => {
     }
 };
 
-const getUniqueMessageContent = data => {
+const streamlineToList = data => {
     const myData = clone(data);
-
-    //todo: improve!!!
-    //todo: write tests
-    const uniqueMessages = [];
-    const uniqueMessageItems = [];
-
-    myData.forEach(function(item) {
-        if (!uniqueMessages.includes(item.msg)) {
-            uniqueMessages.push(item.msg);
-            uniqueMessageItems.push({ msg: item.msg, rel: [item._id] });
-        } else {
-            uniqueMessageItems.forEach(function(element) {
-                if (element.msg === item.msg) {
-                    element.rel.push(item._id);
-                }
-            });
-        }
-    });
-
-    return uniqueMessageItems;
+    try {
+        return myData.map(item => item.msg);
+    } catch (error) {
+        return '';
+    }
 };
 
 class markovChainChat {
@@ -74,55 +62,45 @@ class markovChainChat {
     async readProcessStore(filePath) {
         const rawData = await loadDataFile(filePath);
 
-        //@todo: rethink how much (detail)data needed, or if msg is enough
-        const getcleansedData = compose(
+        //move to utilites..
+        const turnOrder = invoker(0, 'reverse');
+
+        const getRefinedData = compose(
+            turnOrder,
+            streamlineToList,
             purifyData,
             prepareData
         );
 
-        const myfineData = getcleansedData(rawData).reverse();
-
-        console.log('chat:');
-        myfineData.forEach(item => {
-            console.log(item.msg);
-        });
+        const msgList = getRefinedData(rawData);
+        const myUniqueContentList = uniq(msgList);
 
         //DRAFT!!! (roughly working)
-        const myUniqueContentList = getUniqueMessageContent(myfineData);
-        const myUniqueContentListMessageArray = myUniqueContentList.map(
-            item => item.msg
-        );
-
-        // console.log(myUniqueContentListMessageArray);
-
         const matrice = [];
         myUniqueContentList.forEach((item, index) => {
             matrice.push([]);
-            myfineData.forEach((ele, i) => {
-                if (item.msg === ele.msg) {
-                    if (i + 1 < myfineData.length) {
+
+            msgList.forEach((ele, i) => {
+                if (item === ele) {
+                    if (i + 1 < msgList.length) {
                         matrice[index].push(
-                            myUniqueContentListMessageArray.indexOf(
-                                myfineData[i + 1].msg
-                            )
+                            myUniqueContentList.indexOf(msgList[i + 1])
                         );
                     }
                 }
             });
         });
+        // console.log(matrice);
 
-        //DRAFT!!! just testing output
+        //just testing output
         const testMsg = 'Hi';
         console.log('------ \nmsg: ' + testMsg);
-        const indexOfMsg = myUniqueContentListMessageArray.indexOf(testMsg);
+        const indexOfMsg = myUniqueContentList.indexOf(testMsg);
         const possibleFollowUps = matrice[indexOfMsg];
-        // console.log('possible next messages:');
-        // possibleFollowUps.forEach((val, index) => {
-        //     console.log(myUniqueContentListMessageArray[val]);
-        // });
+
         console.log(
             'answer: ' +
-                myUniqueContentListMessageArray[
+                myUniqueContentList[
                     possibleFollowUps[
                         this.getRandomInt(possibleFollowUps.length)
                     ]
@@ -132,7 +110,7 @@ class markovChainChat {
         //@todo: function for storing data
     }
 
-    //@todo: put into helper/utility module
+    //@todo: put into helper/utility module if still needed
     getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
