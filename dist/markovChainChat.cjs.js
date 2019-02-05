@@ -57,6 +57,26 @@ const streamlineToList = data => {
     }
 };
 
+const buildMatrice = (uniqueList, msgList) => {
+    const cloneMsgList = R.clone(msgList);
+    const cloneUniqueList = R.clone(uniqueList);
+    const matrice = Array.from(cloneUniqueList, () => []);
+
+    try {
+        cloneMsgList.forEach((msg, index) => {
+            const indexPreviousMsg = cloneUniqueList.indexOf(
+                cloneMsgList[index + 1]
+            );
+            if (indexPreviousMsg != -1) {
+                matrice[indexPreviousMsg].push(cloneUniqueList.indexOf(msg));
+            }
+        });
+        return matrice;
+    } catch (error) {
+        return '';
+    }
+};
+
 class markovChainChat {
     constructor(textFile) {
         this.readProcessStore(textFile);
@@ -64,45 +84,31 @@ class markovChainChat {
     async readProcessStore(filePath) {
         const rawData = await loadDataFile(filePath);
 
-        //move to utilites..
-        const turnOrder = R.invoker(0, 'reverse');
-
         const getRefinedData = R.compose(
-            turnOrder,
             streamlineToList,
             purifyData,
             prepareData
         );
 
         const msgList = getRefinedData(rawData);
-        const myUniqueContentList = R.uniq(msgList);
+        const msgListUnique = R.uniq(msgList);
+        console.log(msgList);
 
-        //DRAFT!!! (roughly working)
-        const matrice = [];
-        myUniqueContentList.forEach((item, index) => {
-            matrice.push([]);
+        const setupBuildMatrice = R.curry(buildMatrice);
+        const buildMatriceFromMsgList = setupBuildMatrice(msgListUnique);
+        const matrice = buildMatriceFromMsgList(msgList);
 
-            msgList.forEach((ele, i) => {
-                if (item === ele) {
-                    if (i + 1 < msgList.length) {
-                        matrice[index].push(
-                            myUniqueContentList.indexOf(msgList[i + 1])
-                        );
-                    }
-                }
-            });
-        });
-        // console.log(matrice);
+        //console.log(matrice);
 
         //just testing output
         const testMsg = 'Hi';
         console.log('------ \nmsg: ' + testMsg);
-        const indexOfMsg = myUniqueContentList.indexOf(testMsg);
+        const indexOfMsg = msgListUnique.indexOf(testMsg);
         const possibleFollowUps = matrice[indexOfMsg];
 
         console.log(
             'answer: ' +
-                myUniqueContentList[
+                msgListUnique[
                     possibleFollowUps[
                         this.getRandomInt(possibleFollowUps.length)
                     ]

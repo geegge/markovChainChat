@@ -3231,6 +3231,27 @@
     }
   };
 
+  var buildMatrice = function buildMatrice(uniqueList, msgList) {
+    var cloneMsgList = clone(msgList);
+    var cloneUniqueList = clone(uniqueList);
+    var matrice = Array.from(cloneUniqueList, function () {
+      return [];
+    });
+
+    try {
+      cloneMsgList.forEach(function (msg, index) {
+        var indexPreviousMsg = cloneUniqueList.indexOf(cloneMsgList[index + 1]);
+
+        if (indexPreviousMsg != -1) {
+          matrice[indexPreviousMsg].push(cloneUniqueList.indexOf(msg));
+        }
+      });
+      return matrice;
+    } catch (error) {
+      return '';
+    }
+  };
+
   var markovChainChat =
   /*#__PURE__*/
   function () {
@@ -3246,7 +3267,7 @@
         var _readProcessStore = _asyncToGenerator(
         /*#__PURE__*/
         regeneratorRuntime.mark(function _callee(filePath) {
-          var rawData, turnOrder, getRefinedData, msgList, myUniqueContentList, matrice, testMsg, indexOfMsg, possibleFollowUps;
+          var rawData, getRefinedData, msgList, msgListUnique, setupBuildMatrice, buildMatriceFromMsgList, matrice, testMsg, indexOfMsg, possibleFollowUps;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -3256,32 +3277,22 @@
 
                 case 2:
                   rawData = _context.sent;
-                  //move to utilites..
-                  turnOrder = invoker(0, 'reverse');
-                  getRefinedData = compose(turnOrder, streamlineToList, purifyData, prepareData);
+                  getRefinedData = compose(streamlineToList, purifyData, prepareData);
                   msgList = getRefinedData(rawData);
-                  myUniqueContentList = uniq(msgList); //DRAFT!!! (roughly working)
-
-                  matrice = [];
-                  myUniqueContentList.forEach(function (item, index) {
-                    matrice.push([]);
-                    msgList.forEach(function (ele, i) {
-                      if (item === ele) {
-                        if (i + 1 < msgList.length) {
-                          matrice[index].push(myUniqueContentList.indexOf(msgList[i + 1]));
-                        }
-                      }
-                    });
-                  }); // console.log(matrice);
+                  msgListUnique = uniq(msgList);
+                  console.log(msgList);
+                  setupBuildMatrice = curry(buildMatrice);
+                  buildMatriceFromMsgList = setupBuildMatrice(msgListUnique);
+                  matrice = buildMatriceFromMsgList(msgList); //console.log(matrice);
                   //just testing output
 
                   testMsg = 'Hi';
                   console.log('------ \nmsg: ' + testMsg);
-                  indexOfMsg = myUniqueContentList.indexOf(testMsg);
+                  indexOfMsg = msgListUnique.indexOf(testMsg);
                   possibleFollowUps = matrice[indexOfMsg];
-                  console.log('answer: ' + myUniqueContentList[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]]); //@todo: function for storing data
+                  console.log('answer: ' + msgListUnique[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]]); //@todo: function for storing data
 
-                case 14:
+                case 15:
                 case "end":
                   return _context.stop();
               }
