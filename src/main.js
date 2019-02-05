@@ -4,6 +4,8 @@ import prepareData from './utility/prepareData.js';
 import purifyData from './utility/purifyData.js';
 import streamlineToList from './utility/streamlineToList.js';
 
+import buildMatrice from './logic/buildMatrice.js';
+
 class markovChainChat {
     constructor(textFile) {
         this.readProcessStore(textFile);
@@ -11,45 +13,31 @@ class markovChainChat {
     async readProcessStore(filePath) {
         const rawData = await loadDataFile(filePath);
 
-        //move to utilites..
-        const turnOrder = R.invoker(0, 'reverse');
-
         const getRefinedData = R.compose(
-            turnOrder,
             streamlineToList,
             purifyData,
             prepareData
         );
 
         const msgList = getRefinedData(rawData);
-        const myUniqueContentList = R.uniq(msgList);
+        const msgListUnique = R.uniq(msgList);
+        console.log(msgList);
 
-        //DRAFT!!! (roughly working)
-        const matrice = [];
-        myUniqueContentList.forEach((item, index) => {
-            matrice.push([]);
+        const setupBuildMatrice = R.curry(buildMatrice);
+        const buildMatriceFromMsgList = setupBuildMatrice(msgListUnique);
+        const matrice = buildMatriceFromMsgList(msgList);
 
-            msgList.forEach((ele, i) => {
-                if (item === ele) {
-                    if (i + 1 < msgList.length) {
-                        matrice[index].push(
-                            myUniqueContentList.indexOf(msgList[i + 1])
-                        );
-                    }
-                }
-            });
-        });
-        // console.log(matrice);
+        //console.log(matrice);
 
         //just testing output
         const testMsg = 'Hi';
         console.log('------ \nmsg: ' + testMsg);
-        const indexOfMsg = myUniqueContentList.indexOf(testMsg);
+        const indexOfMsg = msgListUnique.indexOf(testMsg);
         const possibleFollowUps = matrice[indexOfMsg];
 
         console.log(
             'answer: ' +
-                myUniqueContentList[
+                msgListUnique[
                     possibleFollowUps[
                         this.getRandomInt(possibleFollowUps.length)
                     ]
