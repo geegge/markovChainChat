@@ -21,10 +21,9 @@ class markovChainChat {
 
         const msgList = getRefinedData(rawData);
         const msgListUnique = R.uniq(msgList);
-        console.log(msgList);
 
-        const setupBuildMatrice = R.curry(buildMatrice);
-        const buildMatriceFromMsgList = setupBuildMatrice(msgListUnique);
+        const setupMatrice = R.curry(buildMatrice);
+        const buildMatriceFromMsgList = setupMatrice(msgListUnique);
         const matrice = buildMatriceFromMsgList(msgList);
 
         //console.log(matrice);
