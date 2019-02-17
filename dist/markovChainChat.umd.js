@@ -3267,7 +3267,7 @@
         var _readProcessStore = _asyncToGenerator(
         /*#__PURE__*/
         regeneratorRuntime.mark(function _callee(filePath) {
-          var rawData, getRefinedData, msgList, msgListUnique, setupBuildMatrice, buildMatriceFromMsgList, matrice, testMsg, indexOfMsg, possibleFollowUps;
+          var rawData, getRefinedData, msgList, msgListUnique, setupMatrice, buildMatriceFromMsgList, matrice, testMsg, indexOfMsg, possibleFollowUps;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -3280,9 +3280,8 @@
                   getRefinedData = compose(streamlineToList, purifyData, prepareData);
                   msgList = getRefinedData(rawData);
                   msgListUnique = uniq(msgList);
-                  console.log(msgList);
-                  setupBuildMatrice = curry(buildMatrice);
-                  buildMatriceFromMsgList = setupBuildMatrice(msgListUnique);
+                  setupMatrice = curry(buildMatrice);
+                  buildMatriceFromMsgList = setupMatrice(msgListUnique);
                   matrice = buildMatriceFromMsgList(msgList); //console.log(matrice);
                   //just testing output
 
@@ -3292,7 +3291,7 @@
                   possibleFollowUps = matrice[indexOfMsg];
                   console.log('answer: ' + msgListUnique[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]]); //@todo: function for storing data
 
-                case 15:
+                case 14:
                 case "end":
                   return _context.stop();
               }
