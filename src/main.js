@@ -40,7 +40,7 @@ class markovChainChat {
                 possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]
             ];
         } else {
-            return '';
+            return;
         }
     }
 
