@@ -3,6 +3,7 @@ import loadDataFile from './utility/loadDataFile.js';
 import prepareData from './utility/prepareData.js';
 import purifyData from './utility/purifyData.js';
 import streamlineToList from './utility/streamlineToList.js';
+import { getRandomInt } from './utility/helpers.js';
 
 import buildMatrice from './logic/buildMatrice.js';
 
@@ -37,16 +38,11 @@ class markovChainChat {
 
         if (possibleFollowUps) {
             return this.msgListUnique[
-                possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]
+                possibleFollowUps[getRandomInt(possibleFollowUps.length)]
             ];
         } else {
             return;
         }
-    }
-
-    //@todo: put into helper/utility module if still needed
-    getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
     }
 }
 
