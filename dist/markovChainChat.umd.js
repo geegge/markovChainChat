@@ -3258,6 +3258,8 @@
     function markovChainChat(textFile) {
       _classCallCheck(this, markovChainChat);
 
+      this.msgListUnique = [];
+      this.matrice = [];
       this.readProcessStore(textFile);
     }
 
@@ -3267,7 +3269,7 @@
         var _readProcessStore = _asyncToGenerator(
         /*#__PURE__*/
         regeneratorRuntime.mark(function _callee(filePath) {
-          var rawData, getRefinedData, msgList, msgListUnique, setupMatrice, buildMatriceFromMsgList, matrice, testMsg, indexOfMsg, possibleFollowUps;
+          var rawData, getRefinedData, msgList, setupMatrice, buildMatriceFromMsgList;
           return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
               switch (_context.prev = _context.next) {
@@ -3279,19 +3281,12 @@
                   rawData = _context.sent;
                   getRefinedData = compose(streamlineToList, purifyData, prepareData);
                   msgList = getRefinedData(rawData);
-                  msgListUnique = uniq(msgList);
+                  this.msgListUnique = uniq(msgList);
                   setupMatrice = curry(buildMatrice);
-                  buildMatriceFromMsgList = setupMatrice(msgListUnique);
-                  matrice = buildMatriceFromMsgList(msgList); //console.log(matrice);
-                  //just testing output
+                  buildMatriceFromMsgList = setupMatrice(this.msgListUnique);
+                  this.matrice = buildMatriceFromMsgList(msgList); //@todo: function for longtime storing data
 
-                  testMsg = 'Hi';
-                  console.log('------ \nmsg: ' + testMsg);
-                  indexOfMsg = msgListUnique.indexOf(testMsg);
-                  possibleFollowUps = matrice[indexOfMsg];
-                  console.log('answer: ' + msgListUnique[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]]); //@todo: function for storing data
-
-                case 14:
+                case 9:
                 case "end":
                   return _context.stop();
               }
@@ -3304,7 +3299,19 @@
         }
 
         return readProcessStore;
-      }() //@todo: put into helper/utility module if still needed
+      }()
+    }, {
+      key: "getMessage",
+      value: function getMessage(chatMsg) {
+        var indexOfChatMsg = this.msgListUnique.indexOf(chatMsg);
+        var possibleFollowUps = this.matrice[indexOfChatMsg];
+
+        if (possibleFollowUps) {
+          return this.msgListUnique[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]];
+        } else {
+          return '';
+        }
+      } //@todo: put into helper/utility module if still needed
 
     }, {
       key: "getRandomInt",

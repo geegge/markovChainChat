@@ -79,6 +79,8 @@ const buildMatrice = (uniqueList, msgList) => {
 
 class markovChainChat {
     constructor(textFile) {
+        this.msgListUnique = [];
+        this.matrice = [];
         this.readProcessStore(textFile);
     }
     async readProcessStore(filePath) {
@@ -91,30 +93,26 @@ class markovChainChat {
         );
 
         const msgList = getRefinedData(rawData);
-        const msgListUnique = R.uniq(msgList);
+        this.msgListUnique = R.uniq(msgList);
 
         const setupMatrice = R.curry(buildMatrice);
-        const buildMatriceFromMsgList = setupMatrice(msgListUnique);
-        const matrice = buildMatriceFromMsgList(msgList);
+        const buildMatriceFromMsgList = setupMatrice(this.msgListUnique);
+        this.matrice = buildMatriceFromMsgList(msgList);
 
-        //console.log(matrice);
+        //@todo: function for longtime storing data
+    }
 
-        //just testing output
-        const testMsg = 'Hi';
-        console.log('------ \nmsg: ' + testMsg);
-        const indexOfMsg = msgListUnique.indexOf(testMsg);
-        const possibleFollowUps = matrice[indexOfMsg];
+    getMessage(chatMsg) {
+        const indexOfChatMsg = this.msgListUnique.indexOf(chatMsg);
+        const possibleFollowUps = this.matrice[indexOfChatMsg];
 
-        console.log(
-            'answer: ' +
-                msgListUnique[
-                    possibleFollowUps[
-                        this.getRandomInt(possibleFollowUps.length)
-                    ]
-                ]
-        );
-
-        //@todo: function for storing data
+        if (possibleFollowUps) {
+            return this.msgListUnique[
+                possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]
+            ];
+        } else {
+            return '';
+        }
     }
 
     //@todo: put into helper/utility module if still needed
