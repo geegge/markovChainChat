@@ -55,6 +55,8 @@ const streamlineToList = data => {
     }
 };
 
+const getRandomInt = max => Math.floor(Math.random() * Math.floor(max));
+
 const buildMatrice = (uniqueList, msgList) => {
     const cloneMsgList = clone(msgList);
     const cloneUniqueList = clone(uniqueList);
@@ -106,16 +108,11 @@ class markovChainChat {
 
         if (possibleFollowUps) {
             return this.msgListUnique[
-                possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]
+                possibleFollowUps[getRandomInt(possibleFollowUps.length)]
             ];
         } else {
-            return '';
+            return;
         }
-    }
-
-    //@todo: put into helper/utility module if still needed
-    getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
     }
 }
 

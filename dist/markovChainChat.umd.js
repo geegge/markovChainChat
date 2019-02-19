@@ -3231,6 +3231,10 @@
     }
   };
 
+  var getRandomInt = function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  };
+
   var buildMatrice = function buildMatrice(uniqueList, msgList) {
     var cloneMsgList = clone(msgList);
     var cloneUniqueList = clone(uniqueList);
@@ -3307,16 +3311,10 @@
         var possibleFollowUps = this.matrice[indexOfChatMsg];
 
         if (possibleFollowUps) {
-          return this.msgListUnique[possibleFollowUps[this.getRandomInt(possibleFollowUps.length)]];
+          return this.msgListUnique[possibleFollowUps[getRandomInt(possibleFollowUps.length)]];
         } else {
-          return '';
+          return;
         }
-      } //@todo: put into helper/utility module if still needed
-
-    }, {
-      key: "getRandomInt",
-      value: function getRandomInt(max$$1) {
-        return Math.floor(Math.random() * Math.floor(max$$1));
       }
     }]);
 
