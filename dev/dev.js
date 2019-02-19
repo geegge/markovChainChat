@@ -4,3 +4,6 @@ const path = require('path');
 const myMarkovChain = new markovChainChat(
     path.resolve(__dirname, './chatlog.txt')
 );
+setTimeout(() => {
+    console.log('dev: ' + myMarkovChain.getMessage('Hi'));
+}, 100);
