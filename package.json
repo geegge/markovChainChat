@@ -19,7 +19,8 @@
     "author": "Günther Lösel",
     "license": "MIT",
     "dependencies": {
-        "ramda": "^0.26.1"
+        "ramda": "^0.26.1",
+        "string-similarity": "^3.0.0"
     },
     "devDependencies": {
         "@babel/core": "7.2.2",
