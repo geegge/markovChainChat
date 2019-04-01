@@ -77,12 +77,16 @@ const buildMatrice = (uniqueList, msgList) => {
     }
 };
 
+//@todo: use esm to load cjs
+const stringSimilarity = require('string-similarity');
+
 class markovChainChat {
     constructor(textFile) {
         this.msgListUnique = [];
         this.matrice = [];
         this.readProcessStore(textFile);
     }
+
     async readProcessStore(filePath) {
         const rawData = await loadDataFile(filePath);
 
@@ -103,8 +107,11 @@ class markovChainChat {
     }
 
     getMessage(chatMsg) {
-        const indexOfChatMsg = this.msgListUnique.indexOf(chatMsg);
-        const possibleFollowUps = this.matrice[indexOfChatMsg];
+        const similarityRating = stringSimilarity.findBestMatch(chatMsg, [
+            ...this.msgListUnique
+        ]);
+
+        const possibleFollowUps = this.matrice[similarityRating.bestMatchIndex];
 
         if (possibleFollowUps) {
             return this.msgListUnique[
