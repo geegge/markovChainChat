@@ -1,13 +1,12 @@
+// ESM syntax is supported.
+export {};
 import * as R from 'ramda';
+import stringSimilarity from 'string-similarity';
 import loadDataFile from './utility/loadDataFile.js';
 import prepareData from './utility/prepareData.js';
 import purifyData from './utility/purifyData.js';
 import streamlineToList from './utility/streamlineToList.js';
 import { getRandomInt } from './utility/helpers.js';
-
-//@todo: use esm to load cjs
-const stringSimilarity = require('string-similarity');
-
 import buildMatrice from './logic/buildMatrice.js';
 
 class markovChainChat {

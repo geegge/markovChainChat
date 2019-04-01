@@ -33,7 +33,7 @@ export default [
     // `file` and `format` for each target)
     {
         input: 'src/main.js',
-        external: ['ramda'],
+        external: ['ramda', 'string-similarity'],
         output: [
             { file: pkg.main, format: 'cjs' },
             { file: pkg.module, format: 'es' }

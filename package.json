@@ -19,6 +19,7 @@
     "author": "Günther Lösel",
     "license": "MIT",
     "dependencies": {
+        "esm": "^3.2.22",
         "ramda": "^0.26.1",
         "string-similarity": "^3.0.0"
     },
@@ -36,6 +37,6 @@
         "rollup-plugin-babel": "^4.3.2",
         "rollup-plugin-commonjs": "^9.2.0",
         "rollup-plugin-eslint": "^5.0.0",
-        "rollup-plugin-node-resolve": "^4.0.0"
+        "rollup-plugin-node-resolve": "^4.0.1"
     }
 }

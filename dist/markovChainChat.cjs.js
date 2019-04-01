@@ -1,6 +1,9 @@
 'use strict';
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
 var R = require('ramda');
+var stringSimilarity = _interopDefault(require('string-similarity'));
 
 const fs = require('fs');
 
@@ -79,8 +82,7 @@ const buildMatrice = (uniqueList, msgList) => {
     }
 };
 
-//@todo: use esm to load cjs
-const stringSimilarity = require('string-similarity');
+// ESM syntax is supported.
 
 class markovChainChat {
     constructor(textFile) {
@@ -112,6 +114,7 @@ class markovChainChat {
         const similarityRating = stringSimilarity.findBestMatch(chatMsg, [
             ...this.msgListUnique
         ]);
+        console.log(similarityRating);
 
         const possibleFollowUps = this.matrice[similarityRating.bestMatchIndex];
 
