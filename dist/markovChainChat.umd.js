@@ -3395,9 +3395,13 @@
       }()
     }, {
       key: "getMessage",
-      value: function getMessage(chatMsg) {
-        var similarityRating = compareStrings.findBestMatch(chatMsg, _toConsumableArray(this.msgListUnique));
-        console.log(similarityRating);
+      value: function getMessage() {
+        var chatMsg = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+        var minRating = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        var similarityRating = compareStrings.findBestMatch(chatMsg.toLowerCase(), _toConsumableArray(this.msgListUnique).map(function (item) {
+          return item.toLowerCase();
+        }));
+        if (similarityRating.bestMatch.rating < minRating) return;
         var possibleFollowUps = this.matrice[similarityRating.bestMatchIndex];
 
         if (possibleFollowUps) {

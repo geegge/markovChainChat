@@ -110,11 +110,13 @@ class markovChainChat {
         //@todo: function for longtime storing data
     }
 
-    getMessage(chatMsg) {
-        const similarityRating = stringSimilarity.findBestMatch(chatMsg, [
-            ...this.msgListUnique
-        ]);
-        console.log(similarityRating);
+    getMessage(chatMsg = '', minRating = 0) {
+        const similarityRating = stringSimilarity.findBestMatch(
+            chatMsg.toLowerCase(),
+            [...this.msgListUnique].map(item => item.toLowerCase())
+        );
+
+        if (similarityRating.bestMatch.rating < minRating) return;
 
         const possibleFollowUps = this.matrice[similarityRating.bestMatchIndex];
 
