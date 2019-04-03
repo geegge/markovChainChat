@@ -1,6 +1,6 @@
 {
     "name": "markov-chain-chat",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "main": "dist/markovChainChat.cjs.js",
     "module": "dist/markovChainChat.esm.js",
     "browser": "dist/markovChainChat.umd.js",
